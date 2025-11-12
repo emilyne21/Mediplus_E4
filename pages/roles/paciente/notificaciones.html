@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones - Paciente | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body style="background-color: #F0EDE5;">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold" style="color: #004643;">Notificaciones</h1>
+                <button class="btn-secondary" style="background-color: #004643; color: #F0EDE5; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#003a37'" onmouseout="this.style.backgroundColor='#004643'">Marcar todas como leídas</button>
+            </div>
+            
+            <div class="card">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-4 p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border-left: 4px solid #004643;">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #004643;">
+                            <svg class="w-6 h-6" style="color: #F0EDE5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-semibold" style="color: #004643;">Recordatorio de Cita</p>
+                            <p class="text-sm mt-1" style="color: #004643; opacity: 0.8;">Tienes una cita programada para mañana a las 10:00 AM con el Dr. Carlos López</p>
+                            <p class="text-xs mt-2" style="color: #004643; opacity: 0.6;">Hace 2 horas</p>
+                        </div>
+                        <span class="w-3 h-3 rounded-full" style="background-color: #004643;"></span>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border-left: 4px solid #004643;">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #004643;">
+                            <svg class="w-6 h-6" style="color: #F0EDE5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-semibold" style="color: #004643;">Resultados de Examen Disponibles</p>
+                            <p class="text-sm mt-1" style="color: #004643; opacity: 0.8;">Los resultados de tu examen de laboratorio del 15 de enero ya están disponibles</p>
+                            <p class="text-xs mt-2" style="color: #004643; opacity: 0.6;">Hace 1 día</p>
+                        </div>
+                        <span class="w-3 h-3 rounded-full" style="background-color: #004643;"></span>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4 p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border-left: 4px solid #004643;">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: #004643;">
+                            <svg class="w-6 h-6" style="color: #F0EDE5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-semibold" style="color: #004643;">Pago Pendiente</p>
+                            <p class="text-sm mt-1" style="color: #004643; opacity: 0.8;">Tienes un pago pendiente de $250.00 por el examen de laboratorio</p>
+                            <p class="text-xs mt-2" style="color: #004643; opacity: 0.6;">Hace 2 días</p>
+                        </div>
+                        <span class="w-3 h-3 rounded-full" style="background-color: #004643;"></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-paciente.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('notificaciones')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

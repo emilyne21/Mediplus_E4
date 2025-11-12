@@ -1,0 +1,78 @@
+<header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+    <div class="flex items-center justify-between px-6 py-4">
+        <div class="flex items-center space-x-4">
+            <img src="/Medi_azul.png" alt="Mediplus" class="h-10 w-auto">
+            <span class="text-sm text-gray-500" id="user-role-display"></span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: #567C8D;">
+                    <span class="text-white font-semibold" id="user-initials">U</span>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-800" id="user-name">Usuario</p>
+                    <p class="text-xs text-gray-500" id="user-email">usuario@mediplus.com</p>
+                </div>
+            </div>
+            <button id="logout-btn" class="btn-secondary text-sm">
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+</header>
+
+<script>
+    (function() {
+        // Función de logout
+        function logout() {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '/pages/auth/login.html';
+        }
+        
+        // Asegurar que la función logout esté disponible globalmente
+        window.logout = logout;
+        
+        // Función para inicializar el header
+        function initHeader() {
+            // Load user info
+            const userName = localStorage.getItem('userName') || 'Usuario';
+            const userEmail = localStorage.getItem('userEmail') || 'usuario@mediplus.com';
+            const userRole = localStorage.getItem('userRole') || 'admin';
+            
+            const nameEl = document.getElementById('user-name');
+            const emailEl = document.getElementById('user-email');
+            const initialsEl = document.getElementById('user-initials');
+            const roleEl = document.getElementById('user-role-display');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            if (nameEl) nameEl.textContent = userName;
+            if (emailEl) emailEl.textContent = userEmail;
+            if (initialsEl) initialsEl.textContent = userName.charAt(0).toUpperCase();
+            if (roleEl) roleEl.textContent = `Rol: ${userRole.charAt(0).toUpperCase() + userRole.slice(1)}`;
+            
+            // Agregar event listener al botón de logout
+            if (logoutBtn) {
+                // Remover listeners anteriores si existen
+                logoutBtn.replaceWith(logoutBtn.cloneNode(true));
+                const newLogoutBtn = document.getElementById('logout-btn');
+                newLogoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+        }
+        
+        // Ejecutar después de que el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHeader);
+        } else {
+            // DOM ya está listo, ejecutar después de un pequeño delay para asegurar que el HTML se insertó
+            setTimeout(initHeader, 100);
+        }
+    })();
+</script>
+

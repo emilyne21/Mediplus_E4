@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de Espera - Enfermería | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Sala de Espera</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Pacientes en Espera</h2>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-4 border-l-4 rounded" style="border-color: #567C8D; background-color: rgba(200, 217, 230, 0.4);">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(86, 124, 141, 0.5);">
+                                        <span class="font-semibold" style="color: #FFFFFF;">JP</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">Juan Pérez</p>
+                                        <p class="text-sm text-gray-600">Prioridad: Rojo</p>
+                                        <p class="text-xs text-gray-500">Tiempo de espera: 20 min</p>
+                                    </div>
+                                </div>
+                                <button class="btn-primary">Atender</button>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 border-l-4 rounded" style="border-color: #567C8D; background-color: #F5EFEB;">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(200, 217, 230, 0.5);">
+                                        <span class="font-semibold" style="color: #2F4156;">MG</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">María García</p>
+                                        <p class="text-sm text-gray-600">Prioridad: Amarillo</p>
+                                        <p class="text-xs text-gray-500">Tiempo de espera: 10 min</p>
+                                    </div>
+                                </div>
+                                <button class="btn-primary">Atender</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Estadísticas</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600">En Espera</p>
+                                <p class="text-2xl font-bold" style="color: #C8D9E6;">8</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Atendidos Hoy</p>
+                                <p class="text-2xl font-bold" style="color: #567C8D;">25</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Tiempo Promedio</p>
+                                <p class="text-2xl font-bold" style="color: #2F4156;">12 min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-enfermeria.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('sala-espera')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas - Paciente | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body style="background-color: #F0EDE5;">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold" style="color: #004643;">Mis Citas</h1>
+                <button id="btn-solicitar-cita" class="btn-primary" style="background-color: #004643; color: #F0EDE5; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#003a37'" onmouseout="this.style.backgroundColor='#004643'">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Solicitar Cita
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Próxima Cita</p>
+                    <p class="text-2xl font-bold mt-2" style="color: #004643;">20 de Enero</p>
+                    <p class="text-sm mt-1" style="color: #004643; opacity: 0.7;">10:00 AM - Dr. Carlos López</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Citas del Mes</p>
+                    <p class="text-3xl font-bold mt-2" style="color: #004643;">4</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Pendientes</p>
+                    <p class="text-3xl font-bold mt-2" style="color: #004643;">2</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4" style="color: #004643;">Historial de Citas</h2>
+                <div class="space-y-4">
+                    <div class="p-4 rounded" style="border-left: 4px solid #004643; background-color: rgba(240, 237, 229, 0.5);">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold" style="color: #004643;">20 de Enero 2024 - 10:00 AM</p>
+                                <p class="mt-1" style="color: #004643; opacity: 0.8;">Paciente: <span id="patient-name-1">Usuario</span></p>
+                                <p class="mt-1" style="color: #004643; opacity: 0.8;">Dr. Carlos López</p>
+                                <p class="text-sm mt-1" style="color: #004643; opacity: 0.6;">Consulta General</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #004643; color: #F0EDE5; opacity: 0.9;">Confirmada</span>
+                                <div class="mt-2">
+                                    <button class="text-sm mr-3" style="color: #004643;" onmouseover="this.style.color='#003a37'" onmouseout="this.style.color='#004643'">Ver Detalles</button>
+                                    <button class="text-sm" style="color: #004643; opacity: 0.7;" onmouseover="this.style.opacity='1'; this.style.color='#003a37'" onmouseout="this.style.opacity='0.7'; this.style.color='#004643'">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 rounded" style="border-left: 4px solid #004643; background-color: rgba(240, 237, 229, 0.5);">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold" style="color: #004643;">15 de Enero 2024 - 09:00 AM</p>
+                                <p class="mt-1" style="color: #004643; opacity: 0.8;">Paciente: <span id="patient-name-2">Usuario</span></p>
+                                <p class="mt-1" style="color: #004643; opacity: 0.8;">Dr. Ana Martínez</p>
+                                <p class="text-sm mt-1" style="color: #004643; opacity: 0.6;">Control</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #004643; color: #F0EDE5; opacity: 0.9;">Completada</span>
+                                <div class="mt-2">
+                                    <button class="text-sm" style="color: #004643;" onmouseover="this.style.color='#003a37'" onmouseout="this.style.color='#004643'">Ver Detalles</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-paciente.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('mis-citas')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        
+        // Cargar nombre del paciente en el historial
+        const patientName = localStorage.getItem('userName') || 'Usuario';
+        document.getElementById('patient-name-1').textContent = patientName;
+        document.getElementById('patient-name-2').textContent = patientName;
+        
+        // Modal de solicitud de cita
+        const btnSolicitarCita = document.getElementById('btn-solicitar-cita');
+        btnSolicitarCita.addEventListener('click', () => {
+            openCitaModal();
+        });
+        
+        function openCitaModal() {
+            // Crear modal
+            const modal = document.createElement('div');
+            modal.id = 'cita-modal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-gray-800">Solicitar Nueva Cita</h2>
+                        <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Médico</label>
+                            <select id="select-medico" class="input-field">
+                                <option value="">Seleccione un médico</option>
+                                <option value="carlos-lopez">Dr. Carlos López - Medicina General</option>
+                                <option value="ana-martinez">Dr. Ana Martínez - Cardiología</option>
+                                <option value="juan-rodriguez">Dr. Juan Rodríguez - Pediatría</option>
+                                <option value="maria-garcia">Dra. María García - Ginecología</option>
+                            </select>
+                        </div>
+                        <div id="calendar-container"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Cerrar modal
+            document.getElementById('close-modal').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+            
+            // Inicializar calendario
+            initCalendar();
+        }
+        
+        function initCalendar() {
+            const container = document.getElementById('calendar-container');
+            const currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            // Función auxiliar para formatear fechas
+            function formatDate(year, month, day) {
+                const monthStr = String(month + 1).padStart(2, '0');
+                const dayStr = String(day).padStart(2, '0');
+                return `${year}-${monthStr}-${dayStr}`;
+            }
+            
+            // Generar horarios disponibles y agendados dinámicamente
+            function generateHorarios() {
+                const horariosDisponibles = {};
+                const horariosAgendados = {};
+                const today = new Date();
+                
+                // Generar horarios para los próximos 60 días
+                for (let i = 0; i < 60; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    const dateStr = formatDate(date.getFullYear(), date.getMonth(), date.getDate());
+                    
+                    // Solo generar horarios para días laborables (lunes a viernes)
+                    const dayOfWeek = date.getDay();
+                    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                        // Horarios disponibles: 09:00, 10:00, 11:00, 14:00, 15:00, 16:00
+                        const allSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
+                        const availableSlots = [];
+                        const bookedSlots = [];
+                        
+                        // Aleatoriamente marcar algunos como disponibles
+                        allSlots.forEach(slot => {
+                            if (Math.random() > 0.3) { // 70% de probabilidad de estar disponible
+                                availableSlots.push(slot);
+                                // 20% de probabilidad de estar agendado
+                                if (Math.random() < 0.2) {
+                                    bookedSlots.push(slot);
+                                }
+                            }
+                        });
+                        
+                        if (availableSlots.length > 0) {
+                            horariosDisponibles[dateStr] = availableSlots;
+                        }
+                        if (bookedSlots.length > 0) {
+                            horariosAgendados[dateStr] = bookedSlots;
+                        }
+                    }
+                }
+                
+                return { horariosDisponibles, horariosAgendados };
+            }
+            
+            const { horariosDisponibles, horariosAgendados } = generateHorarios();
+            
+            function renderCalendar() {
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startingDayOfWeek = firstDay.getDay();
+                const adjustedStartingDay = startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1; // Lunes = 0
+                
+                const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                                  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+                
+                let calendarHTML = `
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">${monthNames[currentMonth]} ${currentYear}</h3>
+                            <div class="flex gap-2">
+                                <button id="prev-month" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                    </svg>
+                                </button>
+                                <button id="next-month" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 mb-2">
+                            ${dayNames.map(day => `<div class="text-center text-sm font-semibold text-gray-600 py-2">${day}</div>`).join('')}
+                        </div>
+                        <div class="grid grid-cols-7 gap-1" id="calendar-grid">
+                `;
+                
+                // Días del mes anterior
+                const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+                for (let i = adjustedStartingDay - 1; i >= 0; i--) {
+                    const day = prevMonthLastDay - i;
+                    const dateStr = formatDate(currentYear, currentMonth - 1, day);
+                    calendarHTML += `<div class="p-2 border rounded bg-gray-50 opacity-50">
+                        <div class="text-sm text-gray-400">${day}</div>
+                    </div>`;
+                }
+                
+                // Días del mes actual
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = formatDate(currentYear, currentMonth, day);
+                    const isToday = currentYear === new Date().getFullYear() && 
+                                   currentMonth === new Date().getMonth() && 
+                                   day === new Date().getDate();
+                    const isPast = new Date(currentYear, currentMonth, day) < new Date().setHours(0,0,0,0);
+                    
+                    const disponibles = horariosDisponibles[dateStr] || [];
+                    const agendados = horariosAgendados[dateStr] || [];
+                    const disponiblesCount = disponibles.length;
+                    const agendadosCount = agendados.length;
+                    
+                    let tagsHTML = '';
+                    if (disponiblesCount > 0 || agendadosCount > 0) {
+                        tagsHTML = '<div class="flex flex-wrap gap-1 mt-1">';
+                        if (disponiblesCount > 0) {
+                            tagsHTML += `<span class="px-1.5 py-0.5 text-xs rounded bg-blue-500 text-white" title="Disponibles: ${disponibles.join(', ')}">${disponiblesCount}</span>`;
+                        }
+                        if (agendadosCount > 0) {
+                            tagsHTML += `<span class="px-1.5 py-0.5 text-xs rounded bg-gray-400 text-white" title="Agendados: ${agendados.join(', ')}">${agendadosCount}</span>`;
+                        }
+                        tagsHTML += '</div>';
+                    }
+                    
+                    calendarHTML += `
+                        <div class="p-2 border rounded ${isPast ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-50'} transition-colors ${isToday ? 'bg-blue-100 border-blue-500' : ''}" 
+                             data-date="${dateStr}" 
+                             data-disponibles='${JSON.stringify(disponibles)}'
+                             data-agendados='${JSON.stringify(agendados)}'
+                             ${isPast ? '' : 'data-selectable="true"'}>
+                            <div class="text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-800'}">${day}</div>
+                            ${tagsHTML}
+                        </div>
+                    `;
+                }
+                
+                // Días del mes siguiente
+                const totalCells = adjustedStartingDay + daysInMonth;
+                const remainingCells = 42 - totalCells; // 6 semanas * 7 días
+                const nextMonth = currentMonth + 1;
+                const nextYear = nextMonth > 11 ? currentYear + 1 : currentYear;
+                const adjustedNextMonth = nextMonth > 11 ? 0 : nextMonth;
+                
+                for (let day = 1; day <= remainingCells && day <= 7; day++) {
+                    calendarHTML += `<div class="p-2 border rounded bg-gray-50 opacity-50">
+                        <div class="text-sm text-gray-400">${day}</div>
+                    </div>`;
+                }
+                
+                calendarHTML += `
+                        </div>
+                    </div>
+                    <div id="time-slots" class="mt-6 hidden">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Horarios Disponibles</h4>
+                        <div id="available-times" class="grid grid-cols-4 gap-2"></div>
+                        <div class="mt-6">
+                            <button id="confirm-cita" class="btn-primary w-full">Confirmar Cita</button>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = calendarHTML;
+                
+                // Event listeners para días del calendario
+                document.querySelectorAll('[data-selectable="true"]').forEach(dayCell => {
+                    dayCell.addEventListener('click', function() {
+                        const dateStr = this.dataset.date;
+                        const disponibles = JSON.parse(this.dataset.disponibles || '[]');
+                        const agendados = JSON.parse(this.dataset.agendados || '[]');
+                        selectDate(dateStr, disponibles, agendados);
+                    });
+                });
+                
+                // Event listeners para navegación
+                document.getElementById('prev-month').addEventListener('click', () => {
+                    currentMonth--;
+                    if (currentMonth < 0) {
+                        currentMonth = 11;
+                        currentYear--;
+                    }
+                    renderCalendar();
+                });
+                
+                document.getElementById('next-month').addEventListener('click', () => {
+                    currentMonth++;
+                    if (currentMonth > 11) {
+                        currentMonth = 0;
+                        currentYear++;
+                    }
+                    renderCalendar();
+                });
+            }
+            
+            function selectDate(dateStr, disponibles, agendados) {
+                const timeSlotsContainer = document.getElementById('time-slots');
+                const availableTimesContainer = document.getElementById('available-times');
+                
+                timeSlotsContainer.classList.remove('hidden');
+                
+                // Filtrar horarios disponibles (no agendados)
+                const horariosLibres = disponibles.filter(h => !agendados.includes(h));
+                
+                if (horariosLibres.length === 0) {
+                    availableTimesContainer.innerHTML = '<p class="text-gray-500 col-span-4">No hay horarios disponibles para este día</p>';
+                } else {
+                    availableTimesContainer.innerHTML = horariosLibres.map(time => `
+                        <button class="time-slot-btn px-4 py-2 border-2 border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition-colors" 
+                                data-time="${time}" 
+                                data-date="${dateStr}">
+                            ${time}
+                        </button>
+                    `).join('');
+                    
+                    // Agregar event listeners a los botones de horario
+                    document.querySelectorAll('.time-slot-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            // Remover selección anterior
+                            document.querySelectorAll('.time-slot-btn').forEach(b => {
+                                b.classList.remove('bg-blue-500', 'text-white');
+                                b.classList.add('border-blue-500');
+                            });
+                            // Seleccionar este horario
+                            this.classList.add('bg-blue-500', 'text-white');
+                            this.classList.remove('border-blue-500');
+                            
+                            // Guardar selección
+                            window.selectedDate = dateStr;
+                            window.selectedTime = this.dataset.time;
+                        });
+                    });
+                }
+            }
+            
+            // Confirmar cita
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'confirm-cita') {
+                    if (!window.selectedDate || !window.selectedTime) {
+                        alert('Por favor seleccione un horario');
+                        return;
+                    }
+                    const medico = document.getElementById('select-medico').value;
+                    if (!medico) {
+                        alert('Por favor seleccione un médico');
+                        return;
+                    }
+                    alert(`Cita agendada para el ${window.selectedDate} a las ${window.selectedTime}`);
+                    // Aquí puedes agregar la lógica para guardar la cita
+                    document.body.removeChild(document.getElementById('cita-modal'));
+                }
+            });
+            
+            renderCalendar();
+        }
+    </script>
+</body>
+</html>
+

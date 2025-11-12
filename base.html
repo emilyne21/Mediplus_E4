@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediplus - Sistema de Gestión Hospitalaria</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div id="header-container"></div>
+    
+    <!-- Main Layout -->
+    <div class="flex h-screen pt-16">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <div id="content-container">
+                <!-- Content will be loaded here -->
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Load header
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+            });
+        
+        // Load sidebar based on role (stored in localStorage or session)
+        const role = localStorage.getItem('userRole') || 'admin';
+        const sidebarMap = {
+            'admin': '/components/sidebar-admin.html',
+            'medico': '/components/sidebar-medico.html',
+            'enfermeria': '/components/sidebar-enfermeria.html',
+            'admision': '/components/sidebar-admision.html',
+            'caja': '/components/sidebar-caja.html',
+            'paciente': '/components/sidebar-paciente.html'
+        };
+        
+        fetch(sidebarMap[role] || sidebarMap['admin'])
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+</html>
+

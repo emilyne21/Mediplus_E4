@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Médico | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Mi Agenda</h1>
+            
+            <div class="card mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex space-x-4">
+                        <button class="btn-secondary">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            Anterior
+                        </button>
+                        <h2 class="text-xl font-semibold text-gray-800">Hoy, 15 de Enero 2024</h2>
+                        <button class="btn-secondary">
+                            Siguiente
+                            <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn-primary">Nueva Cita</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Citas del Día</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-4 p-4 rounded" style="border-color: #567C8D; background-color: #F5EFEB;">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">09:00 AM</p>
+                                        <p class="text-gray-600">Juan Pérez</p>
+                                        <p class="text-sm text-gray-500">Consulta General</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #C8D9E6; color: #2F4156;">Confirmada</span>
+                                </div>
+                            </div>
+                            <div class="border-l-4 p-4 rounded" style="border-color: #567C8D; background-color: #C8D9E6;">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">10:30 AM</p>
+                                        <p class="text-gray-600">María García</p>
+                                        <p class="text-sm text-gray-500">Control</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #567C8D; color: #FFFFFF;">En Progreso</span>
+                                </div>
+                            </div>
+                            <div class="border-l-4 p-4 rounded" style="border-color: #2F4156; background-color: #F5EFEB;">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">02:00 PM</p>
+                                        <p class="text-gray-600">Carlos López</p>
+                                        <p class="text-sm text-gray-500">Consulta General</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #C8D9E6; color: #2F4156;">Pendiente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumen</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Citas</p>
+                                <p class="text-2xl font-bold" style="color: #2F4156;">12</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Completadas</p>
+                                <p class="text-2xl font-bold" style="color: #567C8D;">8</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Pendientes</p>
+                                <p class="text-2xl font-bold" style="color: #C8D9E6;">4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-medico.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('agenda')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

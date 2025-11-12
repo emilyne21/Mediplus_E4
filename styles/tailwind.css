@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white font-semibold py-2 px-4 rounded-lg transition-colors;
+    background-color: #567C8D;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2F4156;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent;
+  }
+  
+  .input-field:focus {
+    --tw-ring-color: #567C8D;
+    box-shadow: 0 0 0 2px rgba(86, 124, 141, 0.5);
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-4 py-3 text-gray-700 rounded-lg transition-colors;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #C8D9E6;
+    color: #2F4156;
+  }
+  
+  .sidebar-link.active {
+    @apply font-semibold;
+    background-color: #C8D9E6;
+    color: #2F4156;
+  }
+}
+

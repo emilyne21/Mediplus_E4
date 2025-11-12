@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pagos - Paciente | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body style="background-color: #F0EDE5;">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-3xl font-bold mb-6" style="color: #004643;">Mis Pagos</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Total Pagado</p>
+                    <p class="text-3xl font-bold mt-2" style="color: #004643;">$1,250.00</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Pagos Realizados</p>
+                    <p class="text-3xl font-bold mt-2" style="color: #004643;">8</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, rgba(240, 237, 229, 0.5) 0%, #ffffff 100%);">
+                    <p class="text-sm" style="color: #004643; opacity: 0.8;">Pendientes</p>
+                    <p class="text-3xl font-bold mt-2" style="color: #004643;">2</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="text-xl font-semibold mb-4" style="color: #004643;">Historial de Pagos</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border-left: 4px solid #004643;">
+                        <div>
+                            <p class="font-semibold" style="color: #004643;">Consulta General</p>
+                            <p class="text-sm mt-1" style="color: #004643; opacity: 0.8;">15 de Enero 2024</p>
+                            <p class="text-xs mt-1" style="color: #004643; opacity: 0.6;">Método: Efectivo</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold" style="color: #004643;">$150.00</p>
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #004643; color: #F0EDE5; opacity: 0.9;">Pagado</span>
+                            <div class="mt-2">
+                                <button class="text-sm" style="color: #004643;" onmouseover="this.style.color='#003a37'" onmouseout="this.style.color='#004643'">Ver Recibo</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border-left: 4px solid #004643;">
+                        <div>
+                            <p class="font-semibold" style="color: #004643;">Examen de Laboratorio</p>
+                            <p class="text-sm mt-1" style="color: #004643; opacity: 0.8;">20 de Enero 2024</p>
+                            <p class="text-xs mt-1" style="color: #004643; opacity: 0.6;">Vencimiento: 25 de Enero</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold" style="color: #004643;">$250.00</p>
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #004643; color: #F0EDE5; opacity: 0.7;">Pendiente</span>
+                            <div class="mt-2">
+                                <button class="text-sm" style="background-color: #004643; color: #F0EDE5; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#003a37'" onmouseout="this.style.backgroundColor='#004643'">Pagar Ahora</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-paciente.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('pagos')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

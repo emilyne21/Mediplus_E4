@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia Clínica Electrónica - Médico | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-800">Historia Clínica Electrónica</h1>
+                <div class="flex space-x-4">
+                    <input type="text" placeholder="Buscar paciente..." class="input-field w-64">
+                    <button class="btn-primary">Nueva Historia</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="card">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Historial de Consultas</h2>
+                        <div class="space-y-4">
+                            <div class="border-l-4 p-4 rounded" style="border-color: #567C8D; background-color: #FFFFFF;">
+                                <div class="mb-3 p-3 rounded" style="background-color: rgba(255, 225, 230, 0.4); border-left: 3px solid #F7C9D4;">
+                                    <p class="text-xs font-semibold text-gray-600 mb-2" style="color: #F7C9D4;">TRIAGE - 15 de Enero 2024 - 08:45 AM</p>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div>
+                                            <p class="text-gray-600"><strong>Prioridad:</strong> <span style="color: #F7C9D4;">Amarillo - Moderado</span></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600"><strong>Signos Vitales:</strong> Temp: 37.2°C, Pulso: 78 bpm, PA: 120/80</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="text-gray-600"><strong>Motivo de Consulta:</strong> Dolor de cabeza persistente desde hace 2 días</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="text-gray-600"><strong>Observaciones:</strong> Paciente refiere dolor pulsátil en región temporal</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">15 de Enero 2024 - 09:00 AM</p>
+                                        <p class="text-sm text-gray-600">Dr. Juan Pérez</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #C8D9E6; color: #2F4156;">Consulta General</span>
+                                </div>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Motivo:</strong> Dolor de cabeza persistente</p>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Diagnóstico:</strong> Migraña</p>
+                                <p class="text-sm text-gray-700"><strong>Tratamiento:</strong> Paracetamol 500mg cada 8 horas</p>
+                            </div>
+                            
+                            <div class="border-l-4 p-4 rounded" style="border-color: #567C8D; background-color: #FFFFFF;">
+                                <div class="mb-3 p-3 rounded" style="background-color: rgba(255, 225, 230, 0.4); border-left: 3px solid #F7C9D4;">
+                                    <p class="text-xs font-semibold text-gray-600 mb-2" style="color: #F7C9D4;">TRIAGE - 10 de Enero 2024 - 02:15 PM</p>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div>
+                                            <p class="text-gray-600"><strong>Prioridad:</strong> <span style="color: #F7C9D4;">Verde - Leve</span></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600"><strong>Signos Vitales:</strong> Temp: 36.8°C, Pulso: 72 bpm, PA: 125/82</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="text-gray-600"><strong>Motivo de Consulta:</strong> Control de presión arterial</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="text-gray-600"><strong>Observaciones:</strong> Paciente asintomático, control rutinario</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">10 de Enero 2024 - 02:30 PM</p>
+                                        <p class="text-sm text-gray-600">Dr. Juan Pérez</p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #567C8D; color: #FFFFFF;">Control</span>
+                                </div>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Motivo:</strong> Control de presión arterial</p>
+                                <p class="text-sm text-gray-700 mb-2"><strong>Diagnóstico:</strong> Hipertensión controlada</p>
+                                <p class="text-sm text-gray-700"><strong>Tratamiento:</strong> Continuar con medicación actual</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Información del Paciente</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <p class="text-sm text-gray-600">Nombre</p>
+                                <p class="font-semibold text-gray-800">Juan Pérez</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Edad</p>
+                                <p class="font-semibold text-gray-800">45 años</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">DNI</p>
+                                <p class="font-semibold text-gray-800">12345678</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Alergias</p>
+                                <p class="font-semibold text-gray-800">Ninguna conocida</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Exámenes Recientes</h3>
+                        <div class="space-y-2">
+                            <div class="p-3 rounded" style="background-color: rgba(255, 225, 230, 0.4);">
+                                <p class="text-sm font-medium text-gray-800">Hemograma Completo</p>
+                                <p class="text-xs text-gray-500">12 de Enero 2024</p>
+                            </div>
+                            <div class="p-3 rounded" style="background-color: rgba(255, 225, 230, 0.4);">
+                                <p class="text-sm font-medium text-gray-800">Radiografía de Tórax</p>
+                                <p class="text-xs text-gray-500">05 de Enero 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-medico.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('hce')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

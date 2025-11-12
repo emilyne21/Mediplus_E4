@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="text-sm text-gray-600" id="kpi-label">Label</p>
+            <p class="text-3xl font-bold text-gray-800 mt-2" id="kpi-value">0</p>
+            <p class="text-xs text-gray-500 mt-1" id="kpi-change">+0% vs anterior</p>
+        </div>
+        <div class="w-16 h-16 rounded-full flex items-center justify-center" id="kpi-icon-bg">
+            <svg class="w-8 h-8" id="kpi-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<script>
+    // KPI Card component can be customized via data attributes
+    function initKPICard(cardElement, config) {
+        const { label, value, change, iconColor = 'blue', iconPath } = config;
+        
+        cardElement.querySelector('#kpi-label').textContent = label;
+        cardElement.querySelector('#kpi-value').textContent = value;
+        cardElement.querySelector('#kpi-change').textContent = change;
+        
+        const iconBg = cardElement.querySelector('#kpi-icon-bg');
+        iconBg.className = `w-16 h-16 rounded-full flex items-center justify-center bg-${iconColor}-100`;
+        
+        if (iconPath) {
+            const icon = cardElement.querySelector('#kpi-icon');
+            icon.innerHTML = iconPath;
+            icon.classList.add(`text-${iconColor}-600`);
+        }
+    }
+</script>
+

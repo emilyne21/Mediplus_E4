@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen flex items-center justify-center py-12">
+    <div class="max-w-md w-full">
+        <div class="card">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold mb-2" style="color: #ADBAC7;">Crear Cuenta</h1>
+                <p class="text-gray-600">Regístrate en Mediplus</p>
+            </div>
+            
+            <form id="registerForm" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nombre Completo
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="input-field" 
+                        placeholder="Juan Pérez"
+                        required
+                    >
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="input-field" 
+                        placeholder="usuario@mediplus.com"
+                        required
+                    >
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="input-field" 
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+                
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                        Confirmar Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        class="input-field" 
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" class="rounded border-gray-300" style="accent-color: #ADBAC7;" required>
+                    <label for="terms" class="ml-2 text-sm text-gray-600">
+                        Acepto los <a href="#" style="color: #ADBAC7;" onmouseover="this.style.color='#8fa5b8'" onmouseout="this.style.color='#ADBAC7'">términos y condiciones</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="w-full" style="background-color: #ADBAC7; color: white; font-weight: 600; padding: 14px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#8fa5b8'" onmouseout="this.style.backgroundColor='#ADBAC7'">
+                    Registrarse
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    ¿Ya tienes una cuenta? 
+                    <a href="/pages/auth/login.html" class="font-semibold" style="color: #ADBAC7;" onmouseover="this.style.color='#8fa5b8'" onmouseout="this.style.color='#ADBAC7'">
+                        Inicia sesión aquí
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Función para obtener usuarios registrados
+        function getRegisteredUsers() {
+            const users = localStorage.getItem('registeredUsers');
+            return users ? JSON.parse(users) : [];
+        }
+
+        // Función para guardar un nuevo usuario
+        function saveUser(userData) {
+            const users = getRegisteredUsers();
+            
+            // Verificar si el email ya existe
+            if (users.some(user => user.email === userData.email)) {
+                alert('Este correo electrónico ya está registrado.');
+                return false;
+            }
+            
+            users.push(userData);
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+            return true;
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            
+            // Crear objeto de usuario (solo pacientes)
+            const userData = {
+                name: name,
+                email: email,
+                password: password, // En producción esto debería estar encriptado
+                role: 'paciente', // Siempre paciente para este registro
+                registeredAt: new Date().toISOString()
+            };
+            
+            // Guardar usuario
+            if (saveUser(userData)) {
+                alert('¡Registro exitoso! Por favor, inicia sesión con tus credenciales.');
+                // Redirigir a la página de login
+                window.location.href = '/pages/auth/login.html';
+            }
+        });
+    </script>
+</body>
+</html>
+

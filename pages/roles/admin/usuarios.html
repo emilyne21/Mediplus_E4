@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Administrador | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold" style="color: #4C9DB0;">Gestión de Usuarios</h1>
+                <button class="btn-primary" style="background-color: #4C9DB0; color: white; font-weight: 600; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#3d7d8d'" onmouseout="this.style.backgroundColor='#4C9DB0'">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Nuevo Usuario
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="mb-4">
+                    <input type="text" placeholder="Buscar usuarios..." class="input-field" style="border-color: #4C9DB0; focus:border-color: #4C9DB0;">
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead style="background-color: #4C9DB0;">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium uppercase" style="color: rgba(255, 235, 175, 0.9);">Nombre</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium uppercase" style="color: rgba(255, 235, 175, 0.9);">Email</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium uppercase" style="color: rgba(255, 235, 175, 0.9);">Rol</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium uppercase" style="color: rgba(255, 235, 175, 0.9);">Estado</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium uppercase" style="color: rgba(255, 235, 175, 0.9);">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y" style="border-color: rgba(255, 235, 175, 0.3);">
+                            <tr style="background-color: rgba(255, 235, 175, 0.3);">
+                                <td class="px-4 py-3 text-sm" style="color: #4C9DB0;">Juan Pérez</td>
+                                <td class="px-4 py-3 text-sm" style="color: #4C9DB0; opacity: 0.8;">juan.perez@mediplus.com</td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #4C9DB0; color: rgba(255, 235, 175, 0.9);">Médico</span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #4C9DB0; color: rgba(255, 235, 175, 0.9);">Activo</span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <button class="mr-3" style="color: #4C9DB0;" onmouseover="this.style.color='#3d7d8d'" onmouseout="this.style.color='#4C9DB0'">Editar</button>
+                                    <button style="color: #4C9DB0; opacity: 0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr style="background-color: white;">
+                                <td class="px-4 py-3 text-sm" style="color: #4C9DB0;">María García</td>
+                                <td class="px-4 py-3 text-sm" style="color: #4C9DB0; opacity: 0.8;">maria.garcia@mediplus.com</td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #4C9DB0; color: rgba(255, 235, 175, 0.9);">Enfermería</span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #4C9DB0; color: rgba(255, 235, 175, 0.9);">Activo</span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <button class="mr-3" style="color: #4C9DB0;" onmouseover="this.style.color='#3d7d8d'" onmouseout="this.style.color='#4C9DB0'">Editar</button>
+                                    <button style="color: #4C9DB0; opacity: 0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-admin.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                // Activate current page
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('usuarios')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

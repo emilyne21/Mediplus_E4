@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triage - Enfermería | Mediplus</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="module">
+        import '/styles/tailwind.css';
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div id="header-container"></div>
+    <div class="flex h-screen pt-16">
+        <div id="sidebar-container"></div>
+        <main class="flex-1 overflow-y-auto p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Triage</h1>
+            
+            <div class="card mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Nuevo Triage</h2>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Paciente</label>
+                        <input type="text" class="input-field" placeholder="Buscar paciente...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
+                        <select class="input-field">
+                            <option>Seleccione prioridad</option>
+                            <option>Rojo - Crítico</option>
+                            <option>Naranja - Urgente</option>
+                            <option>Amarillo - Moderado</option>
+                            <option>Verde - Leve</option>
+                            <option>Azul - No Urgente</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Signos Vitales</label>
+                        <input type="text" class="input-field" placeholder="Temperatura, Pulso, etc.">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Motivo de Consulta</label>
+                        <input type="text" class="input-field" placeholder="Descripción breve">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones</label>
+                        <textarea class="input-field" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="btn-primary">Registrar Triage</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Pacientes en Triage</h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-4 border-l-4 rounded" style="border-color: #567C8D; background-color: rgba(200, 217, 230, 0.4);">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(86, 124, 141, 0.5);">
+                                <span class="font-semibold" style="color: #FFFFFF;">JP</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">Juan Pérez</p>
+                                <p class="text-sm text-gray-600">Prioridad: Rojo - Crítico</p>
+                                <p class="text-xs text-gray-500">Hace 5 minutos</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary">Ver Detalles</button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 border-l-4 rounded" style="border-color: #567C8D; background-color: #F5EFEB;">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(200, 217, 230, 0.5);">
+                                <span class="font-semibold" style="color: #2F4156;">MG</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">María García</p>
+                                <p class="text-sm text-gray-600">Prioridad: Amarillo - Moderado</p>
+                                <p class="text-xs text-gray-500">Hace 15 minutos</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        fetch('/components/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+                // Ejecutar scripts del header
+                const scripts = document.getElementById('header-container').querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        
+        fetch('/components/sidebar-enfermeria.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    if (link.href.includes('triage')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+

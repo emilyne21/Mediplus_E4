@@ -59,13 +59,159 @@
                             <p class="text-xl font-bold" style="color: #004643;">$250.00</p>
                             <span class="px-2 py-1 text-xs font-semibold rounded-full" style="background-color: #004643; color: #F0EDE5; opacity: 0.7;">Pendiente</span>
                             <div class="mt-2">
-                                <button class="text-sm" style="background-color: #004643; color: #F0EDE5; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#003a37'" onmouseout="this.style.backgroundColor='#004643'">Pagar Ahora</button>
+                                <button id="btn-pagar-ahora" class="btn-pagar text-sm" data-monto="250.00" data-servicio="Examen de Laboratorio" style="background-color: #004643; color: #F0EDE5; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#003a37'" onmouseout="this.style.backgroundColor='#004643'">Pagar Ahora</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Modal de Pago Simulado -->
+    <div id="modal-pago" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto" style="background-color: #F0EDE5;">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold" style="color: #004643;">Procesar Pago</h2>
+                    <button id="btn-cerrar-modal" class="text-gray-500 hover:text-gray-700 text-2xl font-bold" style="color: #004643;">&times;</button>
+                </div>
+                
+                <!-- Resumen del Pago -->
+                <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5); border: 2px solid #004643;">
+                    <h3 class="font-semibold mb-3" style="color: #004643;">Resumen del Pago</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span style="color: #004643; opacity: 0.8;">Servicio:</span>
+                            <span id="resumen-servicio" class="font-semibold" style="color: #004643;"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span style="color: #004643; opacity: 0.8;">Monto:</span>
+                            <span id="resumen-monto" class="font-bold text-xl" style="color: #004643;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métodos de Pago -->
+                <div class="mb-6">
+                    <h3 class="font-semibold mb-4" style="color: #004643;">Método de Pago</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 rounded-lg cursor-pointer border-2" style="border-color: #004643; background-color: rgba(240, 237, 229, 0.3);" id="metodo-tarjeta-label">
+                            <input type="radio" name="metodo-pago" value="tarjeta" class="mr-3" checked>
+                            <img src="/visa.png" alt="Visa" class="h-10 w-auto mr-3">
+                            <div class="flex-1">
+                                <span class="font-semibold" style="color: #004643;">Tarjeta de Crédito/Débito</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 rounded-lg cursor-pointer border-2" style="border-color: #004643; background-color: rgba(240, 237, 229, 0.3);" id="metodo-efectivo-label">
+                            <input type="radio" name="metodo-pago" value="efectivo" class="mr-3">
+                            <img src="/efectivo.png" alt="Efectivo" class="h-10 w-auto mr-3">
+                            <div class="flex-1">
+                                <span class="font-semibold" style="color: #004643;">Efectivo</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 rounded-lg cursor-pointer border-2" style="border-color: #004643; background-color: rgba(240, 237, 229, 0.3);" id="metodo-transferencia-label">
+                            <input type="radio" name="metodo-pago" value="transferencia" class="mr-3">
+                            <img src="/trans.png" alt="Transferencia" class="h-10 w-auto mr-3">
+                            <div class="flex-1">
+                                <span class="font-semibold" style="color: #004643;">Transferencia Bancaria</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Formulario de Tarjeta -->
+                <div id="form-tarjeta" class="mb-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Número de Tarjeta</label>
+                            <input type="text" id="numero-tarjeta" placeholder="1234 5678 9012 3456" maxlength="19" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;" oninput="this.value = this.value.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim()">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #004643;">Fecha Vencimiento</label>
+                                <input type="text" id="fecha-vencimiento" placeholder="MM/AA" maxlength="5" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;" oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2')">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #004643;">CVV</label>
+                                <input type="text" id="cvv" placeholder="123" maxlength="4" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;" oninput="this.value = this.value.replace(/\D/g, '')">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Nombre del Titular</label>
+                            <input type="text" id="nombre-titular" placeholder="Nombre como aparece en la tarjeta" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Efectivo -->
+                <div id="form-efectivo" class="mb-6 hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Monto Recibido</label>
+                            <input type="number" id="monto-recibido" placeholder="0.00" step="0.01" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;">
+                        </div>
+                        <div id="cambio-display" class="p-3 rounded-lg hidden" style="background-color: rgba(240, 237, 229, 0.5);">
+                            <p class="text-sm" style="color: #004643; opacity: 0.8;">Cambio:</p>
+                            <p id="monto-cambio" class="text-xl font-bold" style="color: #004643;"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Transferencia -->
+                <div id="form-transferencia" class="mb-6 hidden">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Banco</label>
+                            <select id="banco" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;">
+                                <option value="">Seleccione un banco</option>
+                                <option value="bancolombia">Bancolombia</option>
+                                <option value="davivienda">Davivienda</option>
+                                <option value="banco-bogota">Banco de Bogotá</option>
+                                <option value="bbva">BBVA</option>
+                                <option value="banco-popular">Banco Popular</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Número de Cuenta</label>
+                            <input type="text" id="numero-cuenta" placeholder="Número de cuenta" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #004643;">Número de Referencia</label>
+                            <input type="text" id="referencia" placeholder="Número de referencia de la transferencia" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #004643; color: #004643;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex gap-4">
+                    <button id="btn-cancelar-pago" class="flex-1 px-4 py-3 rounded-lg font-semibold border-2" style="border-color: #004643; color: #004643; background-color: transparent;">Cancelar</button>
+                    <button id="btn-procesar-pago" class="flex-1 px-4 py-3 rounded-lg font-semibold text-white" style="background-color: #004643;">Procesar Pago</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="modal-confirmacion" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" style="background-color: #F0EDE5;">
+            <div class="p-6 text-center">
+                <div class="mb-4">
+                    <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style="background-color: #004643;">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-2" style="color: #004643;">¡Pago Exitoso!</h2>
+                <p class="mb-4" style="color: #004643; opacity: 0.8;">Su pago ha sido procesado correctamente.</p>
+                <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(240, 237, 229, 0.5);">
+                    <p class="text-sm mb-2" style="color: #004643; opacity: 0.8;">Número de Transacción:</p>
+                    <p id="numero-transaccion" class="font-bold text-lg" style="color: #004643;"></p>
+                </div>
+                <button id="btn-cerrar-confirmacion" class="w-full px-4 py-3 rounded-lg font-semibold text-white" style="background-color: #004643;">Aceptar</button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -95,6 +241,173 @@
                     }
                 });
             });
+
+        // Funcionalidad del Modal de Pago
+        const modalPago = document.getElementById('modal-pago');
+        const modalConfirmacion = document.getElementById('modal-confirmacion');
+        const btnCerrarModal = document.getElementById('btn-cerrar-modal');
+        const btnCancelarPago = document.getElementById('btn-cancelar-pago');
+        const btnProcesarPago = document.getElementById('btn-procesar-pago');
+        const btnCerrarConfirmacion = document.getElementById('btn-cerrar-confirmacion');
+        const metodoPagoInputs = document.querySelectorAll('input[name="metodo-pago"]');
+        const formTarjeta = document.getElementById('form-tarjeta');
+        const formEfectivo = document.getElementById('form-efectivo');
+        const formTransferencia = document.getElementById('form-transferencia');
+        const montoRecibido = document.getElementById('monto-recibido');
+        const cambioDisplay = document.getElementById('cambio-display');
+        const montoCambio = document.getElementById('monto-cambio');
+        const resumenServicio = document.getElementById('resumen-servicio');
+        const resumenMonto = document.getElementById('resumen-monto');
+        const numeroTransaccion = document.getElementById('numero-transaccion');
+
+        let montoPago = 0;
+
+        // Abrir modal de pago (usando event delegation para múltiples botones)
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-pagar') || e.target.closest('.btn-pagar')) {
+                const btn = e.target.classList.contains('btn-pagar') ? e.target : e.target.closest('.btn-pagar');
+                montoPago = parseFloat(btn.getAttribute('data-monto'));
+                const servicio = btn.getAttribute('data-servicio');
+                
+                resumenServicio.textContent = servicio;
+                resumenMonto.textContent = `$${montoPago.toFixed(2)}`;
+                
+                // Resetear formularios
+                document.getElementById('numero-tarjeta').value = '';
+                document.getElementById('fecha-vencimiento').value = '';
+                document.getElementById('cvv').value = '';
+                document.getElementById('nombre-titular').value = '';
+                document.getElementById('monto-recibido').value = '';
+                document.getElementById('banco').value = '';
+                document.getElementById('numero-cuenta').value = '';
+                document.getElementById('referencia').value = '';
+                cambioDisplay.classList.add('hidden');
+                
+                // Seleccionar método por defecto
+                document.querySelector('input[name="metodo-pago"][value="tarjeta"]').checked = true;
+                mostrarFormularioMetodo('tarjeta');
+                
+                modalPago.style.display = 'flex';
+            }
+        });
+
+        // Cerrar modal de pago
+        btnCerrarModal.addEventListener('click', () => {
+            modalPago.style.display = 'none';
+        });
+
+        btnCancelarPago.addEventListener('click', () => {
+            modalPago.style.display = 'none';
+        });
+
+        // Cambiar método de pago
+        metodoPagoInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                mostrarFormularioMetodo(e.target.value);
+            });
+        });
+
+        function mostrarFormularioMetodo(metodo) {
+            formTarjeta.classList.add('hidden');
+            formEfectivo.classList.add('hidden');
+            formTransferencia.classList.add('hidden');
+            cambioDisplay.classList.add('hidden');
+
+            if (metodo === 'tarjeta') {
+                formTarjeta.classList.remove('hidden');
+            } else if (metodo === 'efectivo') {
+                formEfectivo.classList.remove('hidden');
+            } else if (metodo === 'transferencia') {
+                formTransferencia.classList.remove('hidden');
+            }
+        }
+
+        // Calcular cambio en efectivo
+        montoRecibido.addEventListener('input', () => {
+            const recibido = parseFloat(montoRecibido.value) || 0;
+            if (recibido >= montoPago) {
+                const cambio = recibido - montoPago;
+                montoCambio.textContent = `$${cambio.toFixed(2)}`;
+                cambioDisplay.classList.remove('hidden');
+            } else {
+                cambioDisplay.classList.add('hidden');
+            }
+        });
+
+        // Procesar pago
+        btnProcesarPago.addEventListener('click', () => {
+            const metodoSeleccionado = document.querySelector('input[name="metodo-pago"]:checked').value;
+            let valido = false;
+
+            if (metodoSeleccionado === 'tarjeta') {
+                const numeroTarjeta = document.getElementById('numero-tarjeta').value.replace(/\s/g, '');
+                const fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+                const cvv = document.getElementById('cvv').value;
+                const nombreTitular = document.getElementById('nombre-titular').value;
+
+                if (numeroTarjeta.length >= 13 && fechaVencimiento.length === 5 && cvv.length >= 3 && nombreTitular.trim() !== '') {
+                    valido = true;
+                } else {
+                    alert('Por favor complete todos los campos de la tarjeta correctamente.');
+                }
+            } else if (metodoSeleccionado === 'efectivo') {
+                const recibido = parseFloat(montoRecibido.value) || 0;
+                if (recibido >= montoPago) {
+                    valido = true;
+                } else {
+                    alert('El monto recibido debe ser mayor o igual al monto a pagar.');
+                }
+            } else if (metodoSeleccionado === 'transferencia') {
+                const banco = document.getElementById('banco').value;
+                const numeroCuenta = document.getElementById('numero-cuenta').value;
+                const referencia = document.getElementById('referencia').value;
+
+                if (banco !== '' && numeroCuenta.trim() !== '' && referencia.trim() !== '') {
+                    valido = true;
+                } else {
+                    alert('Por favor complete todos los campos de la transferencia.');
+                }
+            }
+
+            if (valido) {
+                // Simular procesamiento
+                btnProcesarPago.disabled = true;
+                btnProcesarPago.textContent = 'Procesando...';
+                
+                setTimeout(() => {
+                    // Generar número de transacción aleatorio
+                    const numTrans = 'TXN-' + Date.now().toString().slice(-8);
+                    numeroTransaccion.textContent = numTrans;
+                    
+                    modalPago.style.display = 'none';
+                    modalConfirmacion.style.display = 'flex';
+                    
+                    btnProcesarPago.disabled = false;
+                    btnProcesarPago.textContent = 'Procesar Pago';
+                }, 1500);
+            }
+        });
+
+        // Cerrar modal de confirmación
+        btnCerrarConfirmacion.addEventListener('click', () => {
+            modalConfirmacion.style.display = 'none';
+            // Recargar la página para actualizar el estado del pago
+            location.reload();
+        });
+
+        // Cerrar modales al hacer clic fuera
+        modalPago.addEventListener('click', (e) => {
+            if (e.target === modalPago) {
+                modalPago.style.display = 'none';
+            }
+        });
+
+        modalConfirmacion.addEventListener('click', (e) => {
+            if (e.target === modalConfirmacion) {
+                modalConfirmacion.style.display = 'none';
+                location.reload();
+            }
+        });
     </script>
 </body>
 </html>

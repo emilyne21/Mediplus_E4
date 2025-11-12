@@ -18,7 +18,7 @@
                 <h1 class="text-3xl font-bold text-gray-800">Historia Clínica Electrónica</h1>
                 <div class="flex space-x-4">
                     <input type="text" placeholder="Buscar paciente..." class="input-field w-64">
-                    <button class="btn-primary">Nueva Historia</button>
+                    <button id="btn-nueva-historia" class="btn-primary">Nueva Historia</button>
                 </div>
             </div>
             
@@ -130,6 +130,153 @@
             </div>
         </main>
     </div>
+
+    <!-- Modal para Crear Nueva Historia Clínica -->
+    <div id="modal-nueva-historia" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" style="background-color: #FFFFFF;">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6 sticky top-0 bg-white pb-4 border-b" style="border-color: #567C8D;">
+                    <h2 class="text-2xl font-bold" style="color: #567C8D;">Nueva Historia Clínica</h2>
+                    <button id="btn-cerrar-modal-historia" class="text-gray-500 hover:text-gray-700 text-2xl font-bold" style="color: #567C8D;">&times;</button>
+                </div>
+                
+                <form id="form-historia-clinica" class="space-y-6">
+                    <!-- Información del Paciente -->
+                    <div class="p-4 rounded-lg" style="background-color: rgba(200, 217, 230, 0.3); border: 2px solid #567C8D;">
+                        <h3 class="font-semibold mb-3" style="color: #567C8D;">Información del Paciente</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Nombre del Paciente</label>
+                                <input type="text" id="nombre-paciente" placeholder="Nombre completo" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">DNI</label>
+                                <input type="text" id="dni-paciente" placeholder="Número de DNI" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Edad</label>
+                                <input type="number" id="edad-paciente" placeholder="Años" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Fecha de Consulta</label>
+                                <input type="datetime-local" id="fecha-consulta" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Motivo de Consulta -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Motivo de Consulta *</label>
+                        <textarea id="motivo-consulta" rows="3" placeholder="Describa el motivo principal de la consulta..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required></textarea>
+                    </div>
+
+                    <!-- Anamnesis -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Anamnesis (Historia de la Enfermedad Actual)</label>
+                        <textarea id="anamnesis" rows="4" placeholder="Describa la historia de la enfermedad actual, síntomas, evolución..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                    </div>
+
+                    <!-- Antecedentes -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Antecedentes Patológicos</label>
+                            <textarea id="antecedentes-patologicos" rows="3" placeholder="Enfermedades previas, cirugías..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Alergias</label>
+                            <textarea id="alergias" rows="3" placeholder="Alergias conocidas..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Examen Físico -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Examen Físico</label>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-xs font-medium mb-1" style="color: #567C8D;">Signos Vitales</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <input type="text" id="temperatura" placeholder="Temp (°C)" class="px-3 py-2 rounded-lg border-2 text-sm" style="border-color: #567C8D; color: #2F4156;">
+                                    <input type="text" id="presion-arterial" placeholder="PA (mmHg)" class="px-3 py-2 rounded-lg border-2 text-sm" style="border-color: #567C8D; color: #2F4156;">
+                                    <input type="text" id="pulso" placeholder="Pulso (bpm)" class="px-3 py-2 rounded-lg border-2 text-sm" style="border-color: #567C8D; color: #2F4156;">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium mb-1" style="color: #567C8D;">Peso y Talla</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="text" id="peso" placeholder="Peso (kg)" class="px-3 py-2 rounded-lg border-2 text-sm" style="border-color: #567C8D; color: #2F4156;">
+                                    <input type="text" id="talla" placeholder="Talla (cm)" class="px-3 py-2 rounded-lg border-2 text-sm" style="border-color: #567C8D; color: #2F4156;">
+                                </div>
+                            </div>
+                        </div>
+                        <textarea id="examen-fisico" rows="4" placeholder="Describa los hallazgos del examen físico..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                    </div>
+
+                    <!-- Diagnóstico -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Diagnóstico *</label>
+                        <textarea id="diagnostico" rows="3" placeholder="Diagnóstico principal y diagnósticos secundarios..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;" required></textarea>
+                    </div>
+
+                    <!-- Tratamiento -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Tratamiento y Prescripciones</label>
+                        <textarea id="tratamiento" rows="4" placeholder="Describa el tratamiento indicado, medicamentos, dosis, frecuencia..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                    </div>
+
+                    <!-- Exámenes Complementarios -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Exámenes Complementarios Solicitados</label>
+                        <textarea id="examenes-complementarios" rows="2" placeholder="Laboratorios, imágenes, estudios solicitados..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Observaciones Adicionales</label>
+                        <textarea id="observaciones" rows="3" placeholder="Observaciones, recomendaciones, seguimiento..." class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;"></textarea>
+                    </div>
+
+                    <!-- Tipo de Consulta -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: #567C8D;">Tipo de Consulta</label>
+                        <select id="tipo-consulta" class="w-full px-4 py-2 rounded-lg border-2" style="border-color: #567C8D; color: #2F4156;">
+                            <option value="consulta-general">Consulta General</option>
+                            <option value="control">Control</option>
+                            <option value="urgencia">Urgencia</option>
+                            <option value="seguimiento">Seguimiento</option>
+                        </select>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="flex gap-4 pt-4 border-t" style="border-color: #567C8D;">
+                        <button type="button" id="btn-cancelar-historia" class="flex-1 px-4 py-3 rounded-lg font-semibold border-2" style="border-color: #567C8D; color: #567C8D; background-color: transparent;">Cancelar</button>
+                        <button type="submit" id="btn-guardar-historia" class="flex-1 px-4 py-3 rounded-lg font-semibold text-white" style="background-color: #567C8D;">Guardar Historia Clínica</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="modal-confirmacion-historia" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" style="background-color: #FFFFFF;">
+            <div class="p-6 text-center">
+                <div class="mb-4">
+                    <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style="background-color: #567C8D;">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-2" style="color: #567C8D;">¡Historia Clínica Creada!</h2>
+                <p class="mb-4" style="color: #2F4156; opacity: 0.8;">La historia clínica ha sido guardada exitosamente.</p>
+                <div class="mb-6 p-4 rounded-lg" style="background-color: rgba(200, 217, 230, 0.3);">
+                    <p class="text-sm mb-2" style="color: #567C8D; opacity: 0.8;">Número de Historia:</p>
+                    <p id="numero-historia" class="font-bold text-lg" style="color: #567C8D;"></p>
+                </div>
+                <button id="btn-cerrar-confirmacion-historia" class="w-full px-4 py-3 rounded-lg font-semibold text-white" style="background-color: #567C8D;">Aceptar</button>
+            </div>
+        </div>
+    </div>
     
     <script>
         fetch('/components/header.html')
@@ -158,6 +305,114 @@
                     }
                 });
             });
+
+        // Funcionalidad del Modal de Nueva Historia Clínica
+        const modalNuevaHistoria = document.getElementById('modal-nueva-historia');
+        const modalConfirmacionHistoria = document.getElementById('modal-confirmacion-historia');
+        const btnNuevaHistoria = document.getElementById('btn-nueva-historia');
+        const btnCerrarModalHistoria = document.getElementById('btn-cerrar-modal-historia');
+        const btnCancelarHistoria = document.getElementById('btn-cancelar-historia');
+        const btnGuardarHistoria = document.getElementById('btn-guardar-historia');
+        const btnCerrarConfirmacionHistoria = document.getElementById('btn-cerrar-confirmacion-historia');
+        const formHistoriaClinica = document.getElementById('form-historia-clinica');
+        const numeroHistoria = document.getElementById('numero-historia');
+        const fechaConsulta = document.getElementById('fecha-consulta');
+
+        // Establecer fecha y hora actual por defecto
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        fechaConsulta.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+        // Abrir modal de nueva historia
+        btnNuevaHistoria.addEventListener('click', () => {
+            // Resetear formulario
+            formHistoriaClinica.reset();
+            fechaConsulta.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            modalNuevaHistoria.style.display = 'flex';
+        });
+
+        // Cerrar modal de nueva historia
+        btnCerrarModalHistoria.addEventListener('click', () => {
+            modalNuevaHistoria.style.display = 'none';
+        });
+
+        btnCancelarHistoria.addEventListener('click', () => {
+            modalNuevaHistoria.style.display = 'none';
+        });
+
+        // Guardar historia clínica
+        formHistoriaClinica.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validar campos requeridos
+            const motivoConsulta = document.getElementById('motivo-consulta').value;
+            const diagnostico = document.getElementById('diagnostico').value;
+            const nombrePaciente = document.getElementById('nombre-paciente').value;
+            const dniPaciente = document.getElementById('dni-paciente').value;
+
+            if (!motivoConsulta.trim() || !diagnostico.trim() || !nombrePaciente.trim() || !dniPaciente.trim()) {
+                alert('Por favor complete todos los campos requeridos (*)');
+                return;
+            }
+
+            // Simular guardado
+            btnGuardarHistoria.disabled = true;
+            btnGuardarHistoria.textContent = 'Guardando...';
+            
+            setTimeout(() => {
+                // Generar número de historia aleatorio
+                const numHist = 'HCE-' + Date.now().toString().slice(-8);
+                numeroHistoria.textContent = numHist;
+                
+                // Aquí se podría guardar en una base de datos
+                // Por ahora solo mostramos la confirmación
+                const historiaData = {
+                    numero: numHist,
+                    paciente: nombrePaciente,
+                    dni: dniPaciente,
+                    fecha: fechaConsulta.value,
+                    motivo: motivoConsulta,
+                    diagnostico: diagnostico,
+                    tipo: document.getElementById('tipo-consulta').value
+                };
+                
+                // Guardar en localStorage para simular persistencia
+                const historias = JSON.parse(localStorage.getItem('historiasClinicas') || '[]');
+                historias.push(historiaData);
+                localStorage.setItem('historiasClinicas', JSON.stringify(historias));
+                
+                modalNuevaHistoria.style.display = 'none';
+                modalConfirmacionHistoria.style.display = 'flex';
+                
+                btnGuardarHistoria.disabled = false;
+                btnGuardarHistoria.textContent = 'Guardar Historia Clínica';
+            }, 1500);
+        });
+
+        // Cerrar modal de confirmación
+        btnCerrarConfirmacionHistoria.addEventListener('click', () => {
+            modalConfirmacionHistoria.style.display = 'none';
+            // Recargar la página para mostrar la nueva historia
+            location.reload();
+        });
+
+        // Cerrar modales al hacer clic fuera
+        modalNuevaHistoria.addEventListener('click', (e) => {
+            if (e.target === modalNuevaHistoria) {
+                modalNuevaHistoria.style.display = 'none';
+            }
+        });
+
+        modalConfirmacionHistoria.addEventListener('click', (e) => {
+            if (e.target === modalConfirmacionHistoria) {
+                modalConfirmacionHistoria.style.display = 'none';
+                location.reload();
+            }
+        });
     </script>
 </body>
 </html>
